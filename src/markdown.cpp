@@ -1046,7 +1046,24 @@ int Markdown::processLink(const char *data,int,int size)
     {
       if (lp==-1) // link to markdown page
       {
-        m_out.addStr("@ref ");
+        if (content.startsWith("\\subpage") || content.startsWith("@subpage"))
+        {
+          content.stripPrefix("\\");
+          content.stripPrefix("@");
+          content.stripPrefix("subpage");
+          content.stripPrefix(" ");
+          m_out.addStr("@subpage ");
+        }
+        else
+        {
+          if (content.startsWith("\\ref") || content.startsWith("@ref"))
+          {
+            content.stripPrefix("\\");
+            content.stripPrefix("@");
+            content.stripPrefix("ref");
+          }
+          m_out.addStr("@ref ");
+        }
         if (!(Portable::isAbsolutePath(link) || isURL(link)))
         {
           QFileInfo forg(link);
