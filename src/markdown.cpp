@@ -1065,6 +1065,9 @@ int Markdown::processLink(const char *data,int,int size)
             }
           }
         }
+        // Convert it to page id, because absolute paths cannot be parsed by the scanner
+        // after a @subpage command.
+        link = markdownFileNameToId(link);
       }
       m_out.addStr(link);
       m_out.addStr(" \"");
