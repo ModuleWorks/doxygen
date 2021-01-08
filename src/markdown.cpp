@@ -1046,7 +1046,19 @@ int Markdown::processLink(const char *data,int,int size)
     {
       if (lp==-1) // link to markdown page
       {
-        m_out.addStr("@ref ");
+        // To support e.g. @subpage [...](somePage.md)
+        bool isSubPage = false;
+        if (m_out.getPos() >= 9 &&
+          (m_out.get()[m_out.getPos() - 9] == '@' || m_out.get()[m_out.getPos() - 9] == '\\'))
+        {
+          QCString previousCommand;
+          convertStringFragment(previousCommand, &m_out.get()[m_out.getPos() - 8], 8);
+          isSubPage = previousCommand == "subpage ";
+        }
+        if (!isSubPage)
+        {
+          m_out.addStr("@ref ");
+        }
         if (!(Portable::isAbsolutePath(link) || isURL(link)))
         {
           QFileInfo forg(link);
