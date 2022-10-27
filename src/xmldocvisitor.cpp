@@ -783,7 +783,7 @@ void XmlDocVisitor::visitPre(DocHtmlTable *t)
   HtmlAttrib* opt;
   for (li.toFirst(); (opt = li.current()); ++li)
   {
-    if (opt->name=="width")
+    if (opt->name=="width" || opt->name.startsWith("data-"))
     {
       m_t << " " << opt->name << "=\"" << opt->value << "\"";
     }
